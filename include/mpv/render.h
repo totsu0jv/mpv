@@ -51,6 +51,7 @@ extern "C" {
  *
  * OpenGL: via MPV_RENDER_API_TYPE_OPENGL, see render_gl.h header.
  * Software: via MPV_RENDER_API_TYPE_SW, see section "Software renderer"
+ * Vulkan: via MPV_RENDER_API_TYPE_VULKAN, see render_vk.h header.
  *
  * Threading
  * ---------
@@ -422,6 +423,23 @@ typedef enum mpv_render_param_type {
      * See MPV_RENDER_PARAM_SW_STRIDE for alignment requirements.
      */
     MPV_RENDER_PARAM_SW_POINTER = 20,
+    /**
+     * Required parameters for initializing the Vulkan renderer. Valid for
+     * mpv_render_context_create().
+     * Type: mpv_vulkan_init_params*
+     */
+    MPV_RENDER_PARAM_VULKAN_INIT_PARAMS = 21,
+    /**
+     * Describes a Vulkan render target. Valid for mpv_render_context_render().
+     * Type: mpv_vulkan_fbo*
+     */
+    MPV_RENDER_PARAM_VULKAN_FBO = 22,
+    /**
+     * Vulkan synchronization primitives. Valid for mpv_render_context_render().
+     * Type: mpv_vulkan_sync*
+     * Optional - if not provided, mpv waits for GPU idle after rendering.
+     */
+    MPV_RENDER_PARAM_VULKAN_SYNC = 23,
 } mpv_render_param_type;
 
 /**
@@ -468,6 +486,8 @@ typedef struct mpv_render_param {
 #define MPV_RENDER_API_TYPE_OPENGL "opengl"
 // See section "Software renderer"
 #define MPV_RENDER_API_TYPE_SW "sw"
+// See render_vk.h
+#define MPV_RENDER_API_TYPE_VULKAN "vulkan"
 
 /**
  * Flags used in mpv_render_frame_info.flags. Each value represents a bit in it.
